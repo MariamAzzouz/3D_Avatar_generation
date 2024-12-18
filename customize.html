@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Customize Avatar</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/OBJExporter.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/customize.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body>
+        <div class="menu">
+            <h1>Personnaliser l'avatar</h1>
+            <div class="menu-controls">
+                <button id="reset-button" class="reset-button">
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </button>
+                <button id="download-button" class="download-button">
+                    <i class="fas fa-download"></i> Download OBJ
+                </button>
+                <select id="language-select">
+                    <option value="fr" selected>Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="container">
+            
+            <div class="left-panel">
+                <!-- Skin Color Section déplacé -->
+                <div class="skin-section">
+                    <h3>Couleur de peau</h3>
+                    <div class="skin-colors">
+                        <div class="color-option skin-color" data-color="#FFE0BD" style="background-color: #FFE0BD;" title="light"></div>
+                        <div class="color-option skin-color" data-color="#E2B681" style="background-color: #E2B681;" title="medium"></div>
+                        <div class="color-option skin-color" data-color="#C68642" style="background-color: #C68642;" title="olive"></div>
+                        <div class="color-option skin-color" data-color="#8D5524" style="background-color: #8D5524;" title="brown"></div>
+                        <div class="color-option skin-color" data-color="#4C3024" style="background-color: #4C3024;" title="dark"></div>
+                    </div>
+                </div>
+                <div class="hair-section">
+                    <h3>Cheveux</h3>
+                    <div class="hair-options">
+                        <img src="/static/images/hair/short.JPG" class="hair-option" alt="short" title="Short Hair">
+                        <img src="/static/images/hair/wavy.jpeg" class="hair-option" alt="wavy" title="Wavy Hair">
+                        <img src="/static/images/hair/long.JPG" class="hair-option" alt="long" title="Long Hair">
+                    </div>
+                </div>
+                <div id="avatar-viewer"></div>
+                <!-- Section des yeux -->
+
+            </div>
+            <div class="controls">
+                <div class="search-section">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Rechercher un vêtement...">
+                    </div>
+                </div>
+                <div class="clothing-categories">
+                    <!-- Catégorie Femme -->
+                    <div class="category-section">
+                        <h3 class="category-title">
+                            <i class="fas fa-female"></i> Femme
+                        </h3>
+                        <div class="clothing-subcategories">
+                            <!-- Robes -->
+                            <div class="subcategory">
+                                <h4 class="subcategory-title">
+                                    <i class="fas fa-dress"></i> Robes
+                                </h4>
+                                <div class="cloth-options">
+                                    <div class="cloth-item">
+                                        <img src="/static/images/dress.PNG" class="cloth-option" alt="dress" title="Robe">
+
+                                        <div class="cloth-customization" style="display: none;">
+                                            <select class="size-input">
+                                                <option value="">Taille</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                            </select>
+                                            <div class="cloth-colors">
+                                                <div class="color-option cloth-color" data-color="#6e88a5" style="background-color: #6e88a5;" title="blue"></div>
+                                                <div class="color-option cloth-color" data-color="#d63031" style="background-color: #d63031;" title="red"></div>
+                                                <div class="color-option cloth-color" data-color="#00b894" style="background-color: #00b894;" title="green"></div>
+                                                <div class="color-option cloth-color" data-color="#2d3436" style="background-color: #2d3436;" title="black"></div>
+                                                <div class="color-option cloth-color" data-color="#6c5ce7" style="background-color: #6c5ce7;" title="purple"></div>
+                                            </div>
+                                            <button class="apply-size">Appliquer</button>
+                                        </div>
+                                        <div class="cloth-details">
+                                            <span class="cloth-price">70 DT</span>
+                                            <button class="buy-button" onclick="buyCloth('dress', 29.99)">
+                                                <i class="fas fa-shopping-cart"></i> Acheter
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Jupes -->
+                            <div class="subcategory">
+                                <h4 class="subcategory-title">
+                                    <i class="fas fa-female"></i> Jupes
+                                </h4>
+                                <div class="cloth-options">
+                                    <div class="cloth-item">
+                                        <img src="/static/images/skirt.PNG" class="cloth-option" alt="skirt" title="Jupe">
+
+                                        <div class="cloth-customization" style="display: none;">
+                                            <select class="size-input">
+                                                <option value="">Taille</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                            </select>
+                                            <div class="cloth-colors">
+                                                <div class="color-option cloth-color" data-color="#6e88a5" style="background-color: #6e88a5;" title="blue"></div>
+                                                <div class="color-option cloth-color" data-color="#d63031" style="background-color: #d63031;" title="red"></div>
+                                                <div class="color-option cloth-color" data-color="#00b894" style="background-color: #00b894;" title="green"></div>
+                                                <div class="color-option cloth-color" data-color="#2d3436" style="background-color: #2d3436;" title="black"></div>
+                                                <div class="color-option cloth-color" data-color="#6c5ce7" style="background-color: #6c5ce7;" title="purple"></div>
+                                            </div>
+                                            <button class="apply-size">Appliquer</button>
+                                        </div>
+                                        <div class="cloth-details">
+                                            <span class="cloth-price">35 DT</span>
+                                            <button class="buy-button" onclick="buyCloth('dress', 29.99)">
+                                                <i class="fas fa-shopping-cart"></i> Acheter
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Catégorie Homme -->
+                    <div class="category-section">
+                        <h3 class="category-title">
+                            <i class="fas fa-male"></i> Homme
+                        </h3>
+                        <div class="clothing-subcategories">
+                            <!-- Pulls -->
+                            <div class="subcategory">
+                                <h4 class="subcategory-title">
+                                    <i class="fas fa-tshirt"></i> Pulls
+                                </h4>
+                                <div class="cloth-options">
+                                    <div class="cloth-item">
+                                        <img src="/static/images/pull.PNG" class="cloth-option" alt="pull" title="Pull">
+
+                                        <div class="cloth-customization" style="display: none;">
+                                            <select class="size-input">
+                                                <option value="">Taille</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                            </select>
+                                            <div class="cloth-colors">
+                                                <div class="color-option cloth-color" data-color="#6e88a5" style="background-color: #6e88a5;" title="blue"></div>
+                                                <div class="color-option cloth-color" data-color="#d63031" style="background-color: #d63031;" title="red"></div>
+                                                <div class="color-option cloth-color" data-color="#00b894" style="background-color: #00b894;" title="green"></div>
+                                                <div class="color-option cloth-color" data-color="#2d3436" style="background-color: #2d3436;" title="black"></div>
+                                                <div class="color-option cloth-color" data-color="#6c5ce7" style="background-color: #6c5ce7;" title="purple"></div>
+                                            </div>
+                                            <button class="apply-size">Appliquer</button>
+                                        </div>
+                                        <div class="cloth-details">
+                                            <span class="cloth-price">40 DT</span>
+                                            <button class="buy-button" onclick="buyCloth('dress', 29.99)">
+                                                <i class="fas fa-shopping-cart"></i> Acheter
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pantalons -->
+                            <div class="subcategory">
+                                <h4 class="subcategory-title">
+                                    <i class="fas fa-male"></i> Pantalons
+                                </h4>
+                                <div class="cloth-options">
+                                    <div class="cloth-item">
+                                        <img src="/static/images/pants.PNG" class="cloth-option" alt="pants" title="Pantalon">
+
+                                        <div class="cloth-customization" style="display: none;">
+                                            <select class="size-input">
+                                                <option value="">Taille</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                            </select>
+                                            <div class="cloth-colors">
+                                                <div class="color-option cloth-color" data-color="#6e88a5" style="background-color: #6e88a5;" title="blue"></div>
+                                                <div class="color-option cloth-color" data-color="#d63031" style="background-color: #d63031;" title="red"></div>
+                                                <div class="color-option cloth-color" data-color="#00b894" style="background-color: #00b894;" title="green"></div>
+                                                <div class="color-option cloth-color" data-color="#2d3436" style="background-color: #2d3436;" title="black"></div>
+                                                <div class="color-option cloth-color" data-color="#6c5ce7" style="background-color: #6c5ce7;" title="purple"></div>
+                                            </div>
+                                            <button class="apply-size">Appliquer</button>
+                                        </div>
+                                        <div class="cloth-details">
+                                            <span class="cloth-price">45 DT</span>
+                                            <button class="buy-button" onclick="buyCloth('pants', 45)">
+                                                <i class="fas fa-shopping-cart"></i> Acheter
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="debug-info" style="position: fixed; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 10px; font-family: monospace;"></div>
+
+        <script>
+            const translations = {
+                fr: {
+                    title: "Personnaliser l'avatar",
+                    skinColor: "Couleur de peau",
+                    hair: "Cheveux",
+                    clothing: "Vêtements",
+                    search: "Rechercher un vêtement...",
+                    reset: "Réinitialiser",
+                    apply: "Appliquer",
+                    size: "Taille",
+                    categories: {
+                        women: "Femme",
+                        men: "Homme"
+                    },
+                    subcategories: {
+                        dresses: "Robes",
+                        skirts: "Jupes",
+                        sweaters: "Pulls",
+                        pants: "Pantalons"
+                    },
+                    colors: {
+                        light: "Claire",
+                        medium: "Moyenne",
+                        olive: "Olive",
+                        brown: "Brune",
+                        dark: "Foncée"
+                    },
+                    clothingColors: {
+                        blue: "Bleu",
+                        red: "Rouge",
+                        green: "Vert",
+                        black: "Noir",
+                        purple: "Violet"
+                    },
+                    clothingTypes: {
+                        dress: "Robe",
+                        skirt: "Jupe",
+                        pull: "Pull",
+                        pants: "Pantalon"
+                    },
+                    buttons: {
+                        buy: "Acheter"
+                    }
+                },
+                en: {
+                    title: "Customize Avatar",
+                    skinColor: "Skin Color",
+                    hair: "Hair",
+                    clothing: "Clothing",
+                    search: "Search for clothing...",
+                    reset: "Reset",
+                    apply: "Apply",
+                    size: "Size",
+                    categories: {
+                        women: "Women",
+                        men: "Men"
+                    },
+                    subcategories: {
+                        dresses: "Dresses",
+                        skirts: "Skirts",
+                        sweaters: "Sweaters",
+                        pants: "Pants"
+                    },
+                    colors: {
+                        light: "Light",
+                        medium: "Medium",
+                        olive: "Olive",
+                        brown: "Brown",
+                        dark: "Dark"
+                    },
+                    clothingColors: {
+                        blue: "Blue",
+                        red: "Red",
+                        green: "Green",
+                        black: "Black",
+                        purple: "Purple"
+                    },
+                    clothingTypes: {
+                        dress: "Dress",
+                        skirt: "Skirt",
+                        pull: "Sweater",
+                        pants: "Pants"
+                    },
+                    buttons: {
+                        buy: "Buy"
+                    }
+                }
+            };
+
+            window.avatarData = {{ avatar_data | tojson | safe }};
+            let hairMesh = null;
+            let clothMesh = null;
+            let scene = null;
+            //let pantsMesh = null;
+            //let topMesh = null;
+            
+            // Debug logging function
+            function debugLog(message) {
+                console.log(message);
+                const debugDiv = document.getElementById('debug-info');
+                debugDiv.innerHTML += message + '<br>';
+                // Keep only last 5 messages
+                const lines = debugDiv.innerHTML.split('<br>');
+                if (lines.length > 5) {
+                    debugDiv.innerHTML = lines.slice(-5).join('<br>');
+                }
+            }
+            
+            function initAvatarViewer(avatarData) {
+                debugLog('Initializing avatar viewer...');
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xffffff);
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 2 / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                const objLoader = new THREE.OBJLoader();
+                
+                renderer.setSize(window.innerWidth / 2, window.innerHeight);
+                document.getElementById('avatar-viewer').appendChild(renderer.domElement);
+                
+                // Create avatar mesh with centered positioning
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(avatarData.vertices.flat(), 3));
+                geometry.setIndex(avatarData.triangles.flat());
+                geometry.computeVertexNormals();
+                
+                // Compute bounding box of avatar geometry
+                geometry.computeBoundingBox();
+                const avatarBbox = geometry.boundingBox;
+                const avatarCenter = new THREE.Vector3();
+                avatarBbox.getCenter(avatarCenter);
+                
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: 0xE2B681,
+                    transparent: true,
+                    opacity: 1
+                });
+
+                const avatarMesh = new THREE.Mesh(geometry, material);
+                avatarMesh.name = 'avatar';
+                avatarMesh.scale.set(0.00090, 0.00090, 0.00090);
+                avatarMesh.position.set(0, -avatarCenter.y * 0.00090, 0);
+                scene.add(avatarMesh);
+
+                // Update camera and controls to focus on center
+                camera.position.set(0, 0, 2);
+                camera.lookAt(0, 0, 0);
+                
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.target.set(0, 0, 0); // Set orbit center to world origin
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.screenSpacePanning = false;
+                controls.minDistance = 1;
+                controls.maxDistance = 5;
+                controls.maxPolarAngle = Math.PI;
+                controls.update();
+                
+                // Add ambient and directional lights
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(1, 1, 1);
+                scene.add(directionalLight);
+                
+                // Variable globale pour suivre le mesh actuel
+                let currentHairMesh = null;
+
+                function clearCurrentHair() {
+                    debugLog('Clearing current hair model');
+                    if (currentHairMesh) {
+                        scene.remove(currentHairMesh);
+                        if (currentHairMesh.geometry) {
+                            currentHairMesh.geometry.dispose();
+                        }
+                        if (currentHairMesh.material) {
+                            currentHairMesh.material.dispose();
+                        }
+                        currentHairMesh = null;
+                        // Forcer le rendu pour effacer l'ancien modèle
+                        renderer.render(scene, camera);
+                    }
+                }
+
+                // Nouvelle fonction pour charger spécifiquement le modèle "hair_long"
+                function loadLongHairModel() {
+                    debugLog('Starting long hair model loading...');
+                    
+                    // Nettoyer l'ancien modèle d'abord
+                    clearCurrentHair();
+                    
+                    if (!scene) {
+                        debugLog('Error: Scene not initialized');
+                        return;
+                    }
+
+                    const objLoader = new THREE.OBJLoader();
+                    objLoader.load(
+                        '/static/models/hair/long.obj',
+                        function(object) {
+                            try {
+                                debugLog('Model loaded, processing...');
+                                
+                                object.traverse(function(child) {
+                                    if (child instanceof THREE.Mesh) {
+                                        const hairMaterial = new THREE.MeshPhongMaterial({
+                                            color: 0x3d2314,
+                                            shininess: 30,
+                                            specular: 0x444444,
+                                            side: THREE.DoubleSide,
+                                            transparent: false,
+                                            opacity: 1.0,
+                                            flatShading: true
+                                        });
+
+                                        const geometry = child.geometry;
+                                        geometry.computeVertexNormals();
+                                        geometry.computeBoundingBox();
+
+                                        // Créer le nouveau mesh
+                                        currentHairMesh = new THREE.Mesh(geometry, hairMaterial);
+
+                                        const scale = 3.6;
+                                        currentHairMesh.scale.set(scale, scale, scale);
+                                        currentHairMesh.position.set(0.005, -0.32, -0.006);
+                                        currentHairMesh.rotation.set(0, 0, 0);
+
+                                        scene.add(currentHairMesh);
+                                        debugLog('New hair mesh added to scene');
+
+                                        renderer.render(scene, camera);
+                                    }
+                                });
+
+                            } catch (error) {
+                                debugLog(`Error processing model: ${error.message}`);
+                                console.error('Processing error:', error);
+                            }
+                        },
+                        function(xhr) {
+                            const percentComplete = xhr.loaded / xhr.total * 100;
+                            debugLog(`Loading progress: ${percentComplete.toFixed(2)}%`);
+                        },
+                        function(error) {
+                            debugLog(`Error loading model: ${error.message}`);
+                            console.error('Loading error:', error);
+                        }
+                    );
+                }
+
+                // Modifier la fonction loadHairModel existante
+                function loadHairModel(hairType) {
+                    debugLog(`Loading hair model: ${hairType}`);
+                    
+                    // Nettoyer l'ancien modèle d'abord
+                    clearCurrentHair();
+                    
+                    if (!scene) {
+                        debugLog('Error: Scene not initialized');
+                        return;
+                    }
+
+                    // Add a point light to better illuminate the model
+                    const pointLight = new THREE.PointLight(0xffffff, 1);
+                    pointLight.position.set(0, 1, 1);
+                    //scene.add(pointLight);
+
+                    const objLoader = new THREE.OBJLoader();
+                    const modelUrl = `/static/models/hair/${hairType}.obj`;
+                    debugLog(`Loading model from: ${modelUrl}`);
+
+                    objLoader.load(
+                        modelUrl,
+                        function(object) {
+                            debugLog('Model loaded successfully');
+                            
+                            object.traverse(function(child) {
+                                if (child instanceof THREE.Mesh) {
+                                    const hairMaterial = new THREE.MeshPhongMaterial({
+                                        color: 0x3d2314,
+                                        shininess: 10,
+                                        specular: 0x444444,
+                                        side: THREE.DoubleSide,
+                                        wireframe: false, // Disabled wireframe
+                                        transparent: true,
+                                        opacity: 1.0
+                                    });
+
+                                    // Compute bounding box
+                                    child.geometry.computeBoundingBox();
+                                    const bbox = child.geometry.boundingBox;
+                                    
+                                    // Center geometry
+                                    const center = new THREE.Vector3();
+                                    bbox.getCenter(center);
+                                    child.geometry.translate(-center.x, -center.y, -center.z);
+                                    
+                                    currentHairMesh = new THREE.Mesh(child.geometry, hairMaterial);
+                                    
+                                    // Position relative to avatar center
+                                    currentHairMesh.scale.set(0.0097, 0.0097, 0.0097);
+                                    currentHairMesh.position.copy(avatarMesh.position);
+                                    currentHairMesh.position.y = 0.684;
+                                    currentHairMesh.position.x += 0.011;
+                                    currentHairMesh.position.z = 0.0019; // Offset up from avatar center
+                                    currentHairMesh.rotation.set(0, 0, 0);
+                                    
+                                    scene.add(currentHairMesh);
+                                    debugLog('Hair mesh added');
+                                    
+                                    // Keep camera focused on scene center
+                                    camera.position.set(0, 0, 2);
+                                    camera.lookAt(0, 0, 0);
+                                    controls.target.set(0, 0, 0);
+                                    controls.update();
+                                }
+                            });
+                        },
+                        function(xhr) {
+                            debugLog(`Loading progress: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+                        },
+                        function(error) {
+                            debugLog(`Error loading hair model: ${error.message}`);
+                            console.error('Detailed error:', error);
+                        }
+                    );
+                }
+
+                // Modifier le gestionnaire d'événements
+                document.querySelectorAll('.hair-option').forEach(image => {
+                    image.addEventListener('click', function() {
+                        const hairType = this.alt;
+                        debugLog(`Hair option clicked: ${hairType}`);
+                        
+                        // Supprimer la classe active de toutes les options
+                        document.querySelectorAll('.hair-option').forEach(img => {
+                            img.classList.remove('active');
+                        });
+                        
+                        // Ajouter la classe active à l'option cliquée
+                        this.classList.add('active');
+                        
+                        // Nettoyer l'ancien modèle avant d'en charger un nouveau
+                        clearCurrentHair();
+                        
+                        if (hairType === 'long') {
+                            loadLongHairModel();
+                        } else {
+                            loadHairModel(hairType);
+                        }
+                    });
+                });
+
+                // Gestionnaire pour les couleurs de vêtements
+                function initClothColorPicker() {
+                    const clothColorOptions = document.querySelectorAll('.cloth-color');
+                    
+                    clothColorOptions.forEach(option => {
+                        option.addEventListener('click', function() {
+                            const parentClothItem = this.closest('.cloth-item');
+                            const colorOptions = parentClothItem.querySelectorAll('.cloth-color');
+                            
+                            // Remove active class from all cloth color options in this cloth item
+                            colorOptions.forEach(opt => opt.classList.remove('active'));
+                            
+                            // Add active class to selected option
+                            this.classList.add('active');
+                            
+                            // Update cloth color
+                            if (clothMesh) {
+                                clothMesh.material.color.setStyle(this.dataset.color);
+                            }
+                        });
+                    });
+                }
+
+                // Modifier la fonction loadClothModel pour prendre en compte la couleur sélectionnée
+                function loadClothModel(clothType, size) {
+                    debugLog(`Attempting to load cloth: ${clothType} size ${size}`);
+                    
+                    // Get the selected color before making the fetch request
+                    const selectedColorElement = document.querySelector('.cloth-color.active');
+                    const clothColor = selectedColorElement ? selectedColorElement.dataset.color : '#6e88a5'; // Default color if none selected
+                    
+                    fetch('/clothing/update_cloth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ cloth: clothType, size: size }),
+                    })
+                    .then(response => {
+                        debugLog(`Server responded with status: ${response.status}`);
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                debugLog(`Error response body: ${text}`);
+                                throw new Error(`Server returned ${response.status}: ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Remove existing cloth mesh if it exists
+                            if (clothMesh) {
+                                scene.remove(clothMesh);
+                                clothMesh.geometry.dispose();
+                                clothMesh.material.dispose();
+                            }
+
+                            const clothGeometry = new THREE.BufferGeometry();
+                            clothGeometry.setAttribute('position', new THREE.Float32BufferAttribute(data.cloth_vertices.flat(), 3));
+                            clothGeometry.setIndex(data.cloth_triangles.flat());
+                            clothGeometry.computeVertexNormals();
+
+                            const clothMaterial = new THREE.MeshStandardMaterial({ 
+                                color: clothColor,
+                                side: THREE.DoubleSide
+                            });
+
+                            clothMesh = new THREE.Mesh(clothGeometry, clothMaterial);
+                            
+                            
+                            // Position the cloth relative to the avatar
+                            clothMesh.position.set(0, -0.86, 0.017);
+                            clothMesh.scale.set(1, 1, 1);
+                            
+                            scene.add(clothMesh);
+                            debugLog('Cloth mesh added successfully with color: ' + clothColor);
+                            
+                            // Force a render update
+                            if (renderer && camera) {
+                                renderer.render(scene, camera);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        debugLog(`Error loading cloth: ${error.message}`);
+                        console.error('Detailed error:', error);
+                    });
+                }
+
+                // Initialize clothing selection
+                document.querySelectorAll('.cloth-option').forEach(clothOption => {
+                    clothOption.addEventListener('click', function() {
+                        // Reset all cloth options and size selectors
+                        document.querySelectorAll('.cloth-option').forEach(opt => {
+                            opt.classList.remove('active');
+                            opt.nextElementSibling.style.display = 'none';
+                        });
+
+                        // Activate selected cloth and show size selector
+                        this.classList.add('active');
+                        this.nextElementSibling.style.display = 'block';
+                    });
+                });
+
+                // Nouvelle fonction pour charger spécifiquement le modèle "pull"
+                function loadPullModel(size) {
+                    debugLog('Loading pull model...');
+                    
+                    if (!scene) {
+                        debugLog('Error: Scene not initialized');
+                        return;
+                    }
+
+                    const objLoader = new THREE.OBJLoader();
+                    const modelUrl = `/static/3D_CLOTHING/pull_S.obj`;
+
+                    objLoader.load(
+                        modelUrl,
+                        function(object) {
+                            debugLog('Pull model loaded successfully');
+                            
+                            // Supprimer l'ancien pull s'il existe
+                            if (clothMesh) {
+                                scene.remove(clothMesh);
+                            }
+
+                            object.traverse(function(child) {
+                                if (child instanceof THREE.Mesh) {
+                                    // Récupérer la couleur sélectionnée
+                                    const selectedColorElement = document.querySelector('.cloth-color.active');
+                                    const pullColor = selectedColorElement ? selectedColorElement.dataset.color : '#6e88a5';
+
+                                    const pullMaterial = new THREE.MeshPhongMaterial({
+                                        color: pullColor,
+                                        shininess: 30,
+                                        specular: 0x444444,
+                                        side: THREE.DoubleSide,
+                                        transparent: true,
+                                        opacity: 1.0
+                                    });
+
+                                    // Centrer la géométrie
+                                    child.geometry.computeBoundingBox();
+                                    const bbox = child.geometry.boundingBox;
+                                    const center = new THREE.Vector3();
+                                    bbox.getCenter(center);
+                                    child.geometry.translate(-center.x, -center.y, -center.z);
+
+                                    clothMesh = new THREE.Mesh(child.geometry, pullMaterial);
+
+                                    // Ajuster l'échelle en fonction de la taille
+                                    let scale = 0.0009;
+                                    switch(size) {
+                                        case 'XS': scale *= 0.9; break;
+                                        case 'S': scale *= 0.95; break;
+                                        case 'L': scale *= 1.05; break;
+                                        case 'XL': scale *= 1.1; break;
+                                    }
+
+                                    clothMesh.scale.set(scale, scale, scale);
+                                    clothMesh.position.set(0.01, 0.24, 0.06);
+                                    clothMesh.rotation.set(0, 0, 0);
+
+                                    scene.add(clothMesh);
+                                    debugLog('Pull mesh added with color: ' + pullColor);
+                                }
+                            });
+                        },
+                        function(xhr) {
+                            debugLog(`Loading progress: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+                        },
+                        function(error) {
+                            debugLog(`Error loading pull model: ${error.message}`);
+                            console.error('Detailed error:', error);
+                        }
+                    );
+                }
+
+                // Nouvelle fonction pour charger spécifiquement le modèle "skirt"
+                function loadSkirtModel(size) {
+                    debugLog('Loading skirt model...');
+                    
+                    if (!scene) {
+                        debugLog('Error: Scene not initialized');
+                        return;
+                    }
+
+                    const objLoader = new THREE.OBJLoader();
+                    const modelUrl = `/static/3D_CLOTHING/skirt_S.obj`;
+                    debugLog(`Attempting to load skirt from: ${modelUrl}`);
+
+                    objLoader.load(
+                        modelUrl,
+                        function(object) {
+                            debugLog('Skirt model loaded successfully');
+                            
+                            // Supprimer l'ancien vtement s'il existe
+                            if (clothMesh) {
+                                scene.remove(clothMesh);
+                            }
+
+                            object.traverse(function(child) {
+                                if (child instanceof THREE.Mesh) {
+                                    // Récupérer la couleur sélectionnée
+                                    const selectedColorElement = document.querySelector('.cloth-color.active');
+                                    const skirtColor = selectedColorElement ? selectedColorElement.dataset.color : '#6e88a5';
+
+                                    const skirtMaterial = new THREE.MeshPhongMaterial({
+                                        color: skirtColor,
+                                        shininess: 30,
+                                        specular: 0x444444,
+                                        side: THREE.DoubleSide,
+                                        transparent: true,
+                                        opacity: 1.0
+                                    });
+
+                                    // Centrer la géométrie
+                                    child.geometry.computeBoundingBox();
+                                    const bbox = child.geometry.boundingBox;
+                                    const center = new THREE.Vector3();
+                                    bbox.getCenter(center);
+                                    child.geometry.translate(-center.x, -center.y, -center.z);
+
+                                    clothMesh = new THREE.Mesh(child.geometry, skirtMaterial);
+
+                                    // Échelle fixe car la taille est déjà dans le modèle
+                                    let scale = 0.0145;
+                                    switch(size) {
+                                    case 'XS': scale *= 0.9; break;
+                                    case 'S': scale *= 0.95; break;
+                                    case 'L': scale *= 1.06; break;
+                                    case 'XL': scale *= 1.2; break;
+                                }
+
+                                    clothMesh.scale.set(scale, scale, scale);
+                                    clothMesh.position.set(0, -0.024, 0.008); // Position ajustée pour la jupe
+                                    clothMesh.rotation.set(Math.PI + Math.PI/2, 0, 0.09);
+
+                                    scene.add(clothMesh);
+                                    debugLog(`Skirt mesh added with color: ${skirtColor}`);
+                                }
+                            });
+                        },
+                        function(xhr) {
+                            debugLog(`Loading progress: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+                        },
+                        function(error) {
+                            debugLog(`Error loading skirt model: ${error.message}`);
+                            console.error('Detailed error:', error);
+                        }
+                    );
+                }
+
+                // Modifier le gestionnaire d'événements existant
+                document.querySelectorAll('.apply-size').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const clothItem = this.closest('.cloth-item');
+                        const clothType = clothItem.querySelector('.cloth-option').alt;
+                        const size = clothItem.querySelector('.size-input').value;
+
+                        if (size) {
+                            switch(clothType) {
+                                case 'pull':
+                                    loadPullModel(size);
+                                    break;
+                                case 'skirt':
+                                    loadSkirtModel(size);
+                                    break;
+                                case 'pants':  // Ajouter ce cas pour les pantalons
+                                    loadPantsModel(size);
+                                    break;                                
+                                default:
+                                    loadClothModel(clothType, size); // Pour les autres types de vêtements
+                            }
+                            debugLog(`Applying ${clothType} in size ${size}`);
+                        } else {
+                            debugLog('Please select a size');
+                        }
+                    });
+                });
+ 
+                // Animation loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / 2 / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth / 2, window.innerHeight);
+                });
+
+                // Gestionnaire pour les couleurs de peau
+                function initSkinColorPicker() {
+                    const skinColorOptions = document.querySelectorAll('.skin-color');
+                    
+                    skinColorOptions.forEach(option => {
+                        option.addEventListener('click', function() {
+                            // Remove active class from all skin options
+                            skinColorOptions.forEach(opt => opt.classList.remove('active'));
+                            
+                            // Add active class to selected option
+                            this.classList.add('active');
+                            
+                            // Update avatar skin color
+                            if (avatarMesh) {
+                                avatarMesh.material.color.setStyle(this.dataset.color);
+                            }
+                        });
+                    });
+                }
+
+                // Add this call to your initAvatarViewer function
+                initSkinColorPicker();
+                initClothColorPicker();
+
+                // Variable globale pour suivre les yeux actuels
+                let currentEyes = null;
+
+                // Fonction pour nettoyer les yeux existants
+                function clearCurrentEyes() {
+                    if (currentEyes) {
+                        scene.remove(currentEyes);
+                        currentEyes.geometry.dispose();
+                        currentEyes.material.dispose();
+                        currentEyes = null;
+                    }
+                }
+
+                // Fonction modifiée pour charger les yeux
+                function loadEyesModel(eyeStyle) {
+                    debugLog(`Loading eye style: ${eyeStyle}`);
+                    
+                    // Nettoyer les yeux existants
+                    clearCurrentEyes();
+                    
+                    // Créer la géométrie pour les yeux (un seul plan rectangulaire)
+                    const eyeGeometry = new THREE.PlaneGeometry(0.1, 0.03); // Ajuster la taille selon vos besoins
+                    
+                    // Charger la texture des yeux
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(
+                        `/static/images/eyes/${eyeStyle}.png`,
+                        function(texture) {
+                            const eyeMaterial = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                transparent: true,
+                                side: THREE.DoubleSide,
+                                depthTest: false
+                            });
+                            
+                            // Créer un seul mesh pour les deux yeux
+                            currentEyes = new THREE.Mesh(eyeGeometry, eyeMaterial);
+                            
+                            // Positionner les yeux sur le visage
+                            currentEyes.position.set(0, 0.03, 0.06); // Ajuster ces valeurs selon votre modèle
+                            
+                            // Faire face à la caméra
+                            currentEyes.rotation.y = -Math.PI / 2;
+                            
+                            // Ajouter les yeux à l'avatar
+                            avatarMesh.add(currentEyes);
+                            
+                            debugLog('Eyes added to avatar');
+                        },
+                        undefined,
+                        function(error) {
+                            debugLog(`Error loading eye texture: ${error.message}`);
+                            console.error('Error loading eye texture:', error);
+                        }
+                    );
+                }
+
+                // Ajouter les gestionnaires d'événements pour les options d'yeux
+                document.querySelectorAll('.eye-option').forEach(image => {
+                    image.addEventListener('click', function() {
+                        const eyeStyle = this.alt;
+                        debugLog(`Eye option clicked: ${eyeStyle}`);
+                        
+                        // Supprimer la classe active de toutes les options
+                        document.querySelectorAll('.eye-option').forEach(img => {
+                            img.classList.remove('active');
+                        });
+                        
+                        // Ajouter la classe active à l'option cliquée
+                        this.classList.add('active');
+                        
+                        // Charger le nouveau style d'yeux
+                        loadEyesModel(eyeStyle);
+                    });
+                });
+
+                // Ajouter après la création des yeux pour le débogage
+                window.addEventListener('keydown', (e) => {
+                    if (!currentEyes) return;
+                    
+                    const step = 0.01;
+                    switch(e.key) {
+                        case 'ArrowUp':
+                            currentEyes.position.y += step;
+                            break;
+                        case 'ArrowDown':
+                            currentEyes.position.y -= step;
+                            break;
+                        case 'ArrowLeft':
+                            currentEyes.position.x -= step;
+                            break;
+                        case 'ArrowRight':
+                            currentEyes.position.x += step;
+                            break;
+                        case 'PageUp':
+                            currentEyes.position.z += step;
+                            break;
+                        case 'PageDown':
+                            currentEyes.position.z -= step;
+                            break;
+                    }
+                    console.log('Eyes position:', currentEyes.position);
+                });
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                debugLog('DOM Content Loaded');
+                initAvatarViewer(window.avatarData);
+            });
+
+            // Add error event listener
+            window.addEventListener('error', function(e) {
+                debugLog(`Global error: ${e.message}`);
+                console.error('Detailed error:', e);
+            });
+
+            // Ajouter cet objet de traduction après les scripts existants
+
+
+            // Ajouter cette fonction pour gérer les traductions
+            function updateLanguage(lang) {
+                // Titre principal
+                document.querySelector('h1').textContent = translations[lang].title;
+                
+                // Sections principales
+                document.querySelector('.skin-section h3').textContent = translations[lang].skinColor;
+                document.querySelector('.hair-section h3').textContent = translations[lang].hair;
+                
+                // Catégories principales (Femme/Homme)
+                document.querySelectorAll('.category-title').forEach(title => {
+                    if (title.textContent.includes('Femme') || title.textContent.includes('Women')) {
+                        title.innerHTML = `<i class="fas fa-female"></i> ${translations[lang].categories.women}`;
+                    } else if (title.textContent.includes('Homme') || title.textContent.includes('Men')) {
+                        title.innerHTML = `<i class="fas fa-male"></i> ${translations[lang].categories.men}`;
+                    }
+                });
+
+                // Sous-catégories
+                document.querySelectorAll('.subcategory-title').forEach(title => {
+                    if (title.textContent.includes('Robes') || title.textContent.includes('Dresses')) {
+                        title.innerHTML = `<i class="fas fa-dress"></i> ${translations[lang].subcategories.dresses}`;
+                    } else if (title.textContent.includes('Jupes') || title.textContent.includes('Skirts')) {
+                        title.innerHTML = `<i class="fas fa-female"></i> ${translations[lang].subcategories.skirts}`;
+                    } else if (title.textContent.includes('Pulls') || title.textContent.includes('Sweaters')) {
+                        title.innerHTML = `<i class="fas fa-tshirt"></i> ${translations[lang].subcategories.sweaters}`;
+                    } else if (title.textContent.includes('Pantalons') || title.textContent.includes('Pants')) {
+                        title.innerHTML = `<i class="fas fa-male"></i> ${translations[lang].subcategories.pants}`;
+                    }
+                });
+
+                // Boutons d'achat
+                document.querySelectorAll('.buy-button').forEach(button => {
+                    button.innerHTML = `<i class="fas fa-shopping-cart"></i> ${translations[lang].buttons.buy}`;
+                });
+
+                // Bouton de réinitialisation
+                document.getElementById('reset-button').innerHTML = 
+                    `<i class="fas fa-undo"></i> ${translations[lang].reset}`;
+
+                // Boutons Appliquer
+                document.querySelectorAll('.apply-size').forEach(button => {
+                    button.textContent = translations[lang].apply;
+                });
+
+                // Champ de recherche
+                document.getElementById('search-input').placeholder = translations[lang].search;
+
+                // Options de taille
+                document.querySelectorAll('.size-input option[value=""]').forEach(option => {
+                    option.textContent = translations[lang].size;
+                });
+
+                // Tooltips des vêtements
+                document.querySelectorAll('.cloth-option').forEach(cloth => {
+                    const type = cloth.alt;
+                    if (translations[lang].clothingTypes[type]) {
+                        cloth.title = translations[lang].clothingTypes[type];
+                    }
+                });
+
+                // Tooltips des couleurs
+                document.querySelectorAll('.color-option').forEach(color => {
+                    const colorKey = color.title.toLowerCase();
+                    if (translations[lang].clothingColors[colorKey]) {
+                        color.title = translations[lang].clothingColors[colorKey];
+                    }
+                });
+            }
+
+            // Ajouter l'écouteur d'événement pour le sélecteur de langue
+            document.getElementById('language-select').addEventListener('change', function(e) {
+                updateLanguage(e.target.value);
+            });
+
+            // Initialiser la langue au chargement de la page
+            document.addEventListener('DOMContentLoaded', function() {
+                const initialLang = document.getElementById('language-select').value;
+                updateLanguage(initialLang);
+            });
+
+            // Ajouter un nettoyage lors du changement de page ou du rechargement
+            window.addEventListener('beforeunload', clearCurrentHair);
+
+            // Ajouter après les autres scripts
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const clothItems = document.querySelectorAll('.cloth-item');
+                
+                clothItems.forEach(item => {
+                    const title = item.querySelector('.cloth-option').title.toLowerCase();
+                    const matchesSearch = title.includes(searchTerm);
+                    
+                    if (matchesSearch) {
+                        item.style.display = '';
+                        // Trouver et afficher le parent subcategory
+                        const subcategory = item.closest('.subcategory');
+                        if (subcategory) {
+                            subcategory.style.display = '';
+                        }
+                        // Trouver et afficher le parent category-section
+                        const category = item.closest('.category-section');
+                        if (category) {
+                            category.style.display = '';
+                        }
+                    } else {
+                        item.style.display = 'none';
+                        
+                        // Vérifier si tous les items d'une subcategory sont cachés
+                        const subcategory = item.closest('.subcategory');
+                        if (subcategory) {
+                            const visibleItems = subcategory.querySelectorAll('.cloth-item[style=""]').length;
+                            subcategory.style.display = visibleItems === 0 ? 'none' : '';
+                        }
+                        
+                        // Vérifier si toutes les subcategories d'une category sont cachées
+                        const category = item.closest('.category-section');
+                        if (category) {
+                            const visibleSubcategories = category.querySelectorAll('.subcategory[style=""]').length;
+                            category.style.display = visibleSubcategories === 0 ? 'none' : '';
+                        }
+                    }
+                });
+            });
+
+            // Fonction modifiée pour réinitialiser l'avatar
+            function resetAvatar() {
+                debugLog('Starting avatar reset...');
+
+                // Réinitialiser les vêtements
+                if (clothMesh) {
+                    debugLog('Removing cloth mesh');
+                    scene.remove(clothMesh);
+                    if (clothMesh.geometry) clothMesh.geometry.dispose();
+                    if (clothMesh.material) {
+                        if (Array.isArray(clothMesh.material)) {
+                            clothMesh.material.forEach(material => material.dispose());
+                        } else {
+                            clothMesh.material.dispose();
+                        }
+                    }
+                    clothMesh = null;
+                }
+
+                // Réinitialiser les cheveux
+                if (hairMesh) {
+                    debugLog('Removing hair mesh');
+                    scene.remove(hairMesh);
+                    if (hairMesh.geometry) hairMesh.geometry.dispose();
+                    if (hairMesh.material) {
+                        if (Array.isArray(hairMesh.material)) {
+                            hairMesh.material.forEach(material => material.dispose());
+                        } else {
+                            hairMesh.material.dispose();
+                        }
+                    }
+                    hairMesh = null;
+                }
+
+                // Réinitialiser les yeux
+                if (currentEyes) {
+                    debugLog('Removing eyes');
+                    scene.remove(currentEyes);
+                    if (currentEyes.geometry) currentEyes.geometry.dispose();
+                    if (currentEyes.material) currentEyes.material.dispose();
+                    currentEyes = null;
+                }
+
+                // Réinitialiser les sélections actives dans l'interface
+                document.querySelectorAll('.cloth-option.active, .hair-option.active, .eye-option.active').forEach(element => {
+                    element.classList.remove('active');
+                });
+
+                // Masquer toutes les personnalisations
+                document.querySelectorAll('.cloth-customization').forEach(element => {
+                    element.style.display = 'none';
+                });
+
+                // Forcer le rendu de la scène pour actualiser l'affichage
+                if (renderer && scene && camera) {
+                    renderer.render(scene, camera);
+                }
+
+                debugLog('Avatar reset completed');
+            }
+
+            // Ajouter l'écouteur d'événement pour le bouton de réinitialisation
+            document.getElementById('reset-button').addEventListener('click', function() {
+                resetAvatar();
+            });
+
+            // Initialize cloth color selection
+            document.querySelectorAll('.cloth-color').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all color options in this cloth item
+                    const parentClothItem = this.closest('.cloth-item');
+                    const colorOptions = parentClothItem.querySelectorAll('.cloth-color');
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected option
+                    this.classList.add('active');
+                    
+                    // Update cloth color if mesh exists
+                    if (clothMesh) {
+                        clothMesh.material.color.setStyle(this.dataset.color);
+                        renderer.render(scene, camera);
+                    }
+                });
+            });
+
+            // Set default active color
+            const defaultColor = document.querySelector('.cloth-color');
+            if (defaultColor) {
+                defaultColor.classList.add('active');
+            }
+
+            // Ajouter après les autres scripts existants
+            // N'oubliez pas d'inclure l'OBJExporter dans le head
+            function downloadAvatarOBJ() {
+                debugLog('Starting avatar export...');
+                
+                // Vérifier que l'avatar existe
+                if (!avatarMesh) {
+                    debugLog('Error: Avatar mesh not found');
+                    return;
+                }
+
+                try {
+                    const exporter = new THREE.OBJExporter();
+                    const objData = exporter.parse(avatarMesh);
+                    debugLog('Avatar exported successfully');
+                    
+                    // Créer et déclencher le téléchargement
+                    const blob = new Blob([objData], { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'your_avatar.obj';
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                    
+                    debugLog('Download completed');
+                } catch (error) {
+                    debugLog('Error during export: ' + error.message);
+                }
+            }
+
+            // Ajouter l'écouteur d'événement pour le bouton de téléchargement
+            document.getElementById('download-button').addEventListener('click', download-button);
+
+            // Initialiser tout correctement après le chargement du DOM
+            document.addEventListener('DOMContentLoaded', function() {
+                // Ajouter l'écouteur pour le bouton de téléchargement
+                const downloadButton = document.getElementById('download-button');
+                if (downloadButton) {
+                    downloadButton.addEventListener('click', download-button);
+                }
+                
+                // Initialiser la langue
+                const languageSelect = document.getElementById('language-select');
+                if (languageSelect) {
+                    const initialLang = languageSelect.value;
+                    updateLanguage(initialLang);
+                    
+                    languageSelect.addEventListener('change', function(e) {
+                        updateLanguage(e.target.value);
+                    });
+                }
+            });
+
+            // Fonction de téléchargement
+            function handleDownload() {
+                alert('Starting download...');
+                console.log('Download button clicked');
+                
+                if (!avatarMesh) {
+                    alert('No avatar to download');
+                    return;
+                }
+                
+                const exporter = new THREE.OBJExporter();
+                const objData = exporter.parse(avatarMesh);
+                
+                const blob = new Blob([objData], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'your_avatar.obj';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            // Initialisation du bouton
+            window.addEventListener('DOMContentLoaded', () => {
+                console.log('Initializing download button...');
+                const downloadButton = document.getElementById('download-button');
+                
+                if (downloadButton) {
+                    console.log('Download button found');
+                    downloadButton.onclick = handleDownload;
+                } else {
+                    console.log('Download button not found');
+                }
+            });
+
+            // Ajoutez ce code juste après votre balise button avec id="download-button"
+            
+                // Test direct du bouton
+            const btn = document.getElementById('download-button');
+             console.log('Button found:', btn);
+                
+            if (btn) {
+                btn.onclick = function() {
+                    alert('Test click');
+                    console.log('Button clicked');
+                };
+            }
+            
+            // Puis ajoutez cette fonction de téléchargement juste après
+            function downloadAvatar() {
+                console.log('Download started');
+                
+                // Récupérer l'avatar
+                const avatar = scene.getObjectByName('avatar');
+                if (!avatar) {
+                    console.error('Avatar not found in scene');
+                    alert('Avatar not found');
+                    return;
+                }
+                
+                try {
+                    // Exporter en OBJ
+                    const exporter = new THREE.OBJExporter();
+                    console.log('Exporting avatar...');
+                    const objData = exporter.parse(avatar);
+                    console.log('Avatar exported');
+                    
+                    // Créer le fichier
+                    const blob = new Blob([objData], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Créer le lien de téléchargement
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'your_avatar.obj';
+                    
+                    // Ajouter temporairement au document et cliquer
+                    document.body.appendChild(link);
+                    console.log('Triggering download...');
+                    link.click();
+                    
+                    // Nettoyer
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    console.log('Download complete');
+                } catch (error) {
+                    console.error('Download error:', error);
+                    alert('Error during download: ' + error.message);
+                }
+            }
+
+            // Ajouter l'écouteur d'événement au bouton
+            document.getElementById('download-button').onclick = function() {
+                console.log('Download button clicked');
+                downloadAvatar();
+            };
+
+            // Add this function in your script section before the closing 
+            function loadPantsModel(size) {
+                debugLog('Loading pants model...');
+                
+                if (!scene) {
+                    debugLog('Error: Scene not initialized');
+                    return;
+                }
+
+                const objLoader = new THREE.OBJLoader();
+                const modelUrl = `/static/3D_CLOTHING/pants_S.obj`;
+                debugLog(`Attempting to load pants from: ${modelUrl}`);
+
+                objLoader.load(
+                    modelUrl,
+                    function(object) {
+                        debugLog('Pants model loaded successfully');
+                        
+                        // Remove existing clothing if present
+                        if (clothMesh) {
+                            scene.remove(clothMesh);
+                        }
+
+                        object.traverse(function(child) {
+                            if (child instanceof THREE.Mesh) {
+                                // Get selected color
+                                const selectedColorElement = document.querySelector('.cloth-color.active');
+                                const pantsColor = selectedColorElement ? selectedColorElement.dataset.color : '#6e88a5';
+
+                                const pantsMaterial = new THREE.MeshPhongMaterial({
+                                    color: pantsColor,
+                                    shininess: 5,
+                                    specular: 0x444444,
+                                    side: THREE.DoubleSide,
+                                    transparent: false,
+                                    opacity: 1.0
+                                });
+
+                                // Center geometry
+                                child.geometry.computeBoundingBox();
+                                const bbox = child.geometry.boundingBox;
+                                const center = new THREE.Vector3();
+                                bbox.getCenter(center);
+                                child.geometry.translate(-center.x, -center.y, -center.z);
+
+                                clothMesh = new THREE.Mesh(child.geometry, pantsMaterial);
+
+                                // Adjust scale based on size
+                                let scale = 0.0128;
+                                switch(size) {
+                                    case 'XS': scale *= 0.9; break;
+                                    case 'S': scale *= 0.95; break;
+                                    case 'L': scale *= 1.06; break;
+                                    case 'XL': scale *= 1.2; break;
+                                }
+
+                                clothMesh.scale.set(scale, scale, scale);
+                                clothMesh.position.set(0.001, -0.31, 0.07); // Adjust position for pants
+                                clothMesh.rotation.set(0, 0, 0);
+
+                                scene.add(clothMesh);
+                                debugLog(`Pants mesh added with color: ${pantsColor}`);
+                            }
+                        });
+                    },
+                    function(xhr) {
+                        debugLog(`Loading progress: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+                    },
+                    function(error) {
+                        debugLog(`Error loading pants model: ${error.message}`);
+                        console.error('Detailed error:', error);
+                    }
+                );
+            }
+        
+            // Update the translations object with pants translations
+            translations.en.clothingTypes.pants = "Pants";
+            translations.fr.clothingTypes.pants = "Pantalon";
+        </script>
+    </body>
+</html>
