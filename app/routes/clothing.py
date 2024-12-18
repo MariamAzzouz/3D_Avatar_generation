@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, session, send_from_directory
 import open3d as o3d
 import numpy as np
 import os
-from app2.config import CLOTHES_FOLDER_PATH
+from app.config import CLOTHES_FOLDER_PATH
 
 clothing = Blueprint('clothing', __name__)
 
