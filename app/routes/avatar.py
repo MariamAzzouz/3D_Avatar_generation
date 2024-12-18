@@ -5,7 +5,7 @@ from scipy.spatial import distance
 import open3d as o3d
 import numpy as np
 import os
-from app2.config import CSV_FILE_PATH, OBJ_FOLDER_PATH
+from app.config import CSV_FILE_PATH, OBJ_FOLDER_PATH
 
 avatar = Blueprint('avatar', __name__)
 
