@@ -1,4 +1,4 @@
-from app2.config import db
+from app.config import db
 import json
 
 class Avatar(db.Model):
