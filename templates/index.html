@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>3D Avatar Generator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background: linear-gradient(135deg, #d1d6d7, #cad4d4);
+        color: #333;
+        font-family: 'Arial', sans-serif;
+      }
+      h1 {
+        color: #376d78;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 2.5rem;
+      }
+      .container {
+        margin-top: 50px;
+        max-width: 900px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1s ease;
+      }
+      .logo {
+        width: 120px;
+        height: auto;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+      .form-group label {
+        font-weight: bold;
+        color: #304458;
+      }
+      .btn-primary {
+        background-color: #23292d;
+        border-color: #a7b1b8;
+        color: #fff;
+        transition: 0.3s;
+      }
+      .btn-primary:hover {
+        background-color: #bec0c1;
+        border-color: #b5b5b6;
+      }
+      .lang-selector {
+        text-align: right;
+        margin-bottom: 10px;
+      }
+      .lang-selector select {
+        border-radius: 5px;
+        padding: 5px;
+        font-size: 1rem;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="lang-selector">
+        <label for="languageSelect">Language:</label>
+        <select id="languageSelect" class="form-control" style="display: inline; width: auto;">
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="de">Deutsch</option>
+          <!-- Add more languages as needed -->
+        </select>
+      </div>
+
+      <h1 id="title">3D Avatar Generation</h1>
+      <p class="info-paragraph" id="welcomeMessage">
+        Welcome to the 3D Avatar Generation tool! Please fill out the form below with the required measurements in mm to generate a customized avatar.
+      </p>
+
+      <form method="post" action="{{ url_for('avatar.generate') }}"> 
+        <div class="form-group">
+            <label for="Gender">Gender:</label>
+            <select class="form-control" id="Gender" name="Gender" required>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="NeckGirth">Neck Girth:</label>
+            <input type="number" class="form-control" id="NeckGirth" name="NeckGirth" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="UpperArmGirthR">Upper Arm Girth R:</label>
+            <input type="number" class="form-control" id="UpperArmGirthR" name="UpperArmGirthR" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="UpperArmGirthL">Upper Arm Girth L:</label>
+            <input type="number" class="form-control" id="UpperArmGirthL" name="UpperArmGirthL" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="BackNeckToWaist">Back Neck Point to Waist:</label>
+            <input type="number" class="form-control" id="BackNeckToWaist" name="BackNeckToWaist" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="BackNeckToWristR">Back Neck Point to Wrist R:</label>
+            <input type="number" class="form-control" id="BackNeckToWristR" name="BackNeckToWristR" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="BackNeckToWristL">Back Neck Point to Wrist L:</label>
+            <input type="number" class="form-control" id="BackNeckToWristL" name="BackNeckToWristL" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="BustGirth">Bust Girth:</label>
+            <input type="number" class="form-control" id="BustGirth" name="BustGirth" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="WaistGirth">Waist Girth:</label>
+            <input type="number" class="form-control" id="WaistGirth" name="WaistGirth" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="HipGirth">Hip Girth:</label>
+            <input type="number" class="form-control" id="HipGirth" name="HipGirth" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="AcrossShoulderWidth">Across Back Shoulder Width:</label>
+            <input type="number" class="form-control" id="AcrossShoulderWidth" name="AcrossShoulderWidth" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="ThighGirthR">Thigh Girth R:</label>
+            <input type="number" class="form-control" id="ThighGirthR" name="ThighGirthR" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="ThighGirthL">Thigh Girth L:</label>
+            <input type="number" class="form-control" id="ThighGirthL" name="ThighGirthL" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="TotalCrotchLength">Total Crotch Length:</label>
+            <input type="number" class="form-control" id="TotalCrotchLength" name="TotalCrotchLength" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="InsideLegHeight">Inside Leg Height:</label>
+            <input type="number" class="form-control" id="InsideLegHeight" name="InsideLegHeight" step="0.01" required>
+        </div>        
+
+        <button type="submit" class="btn btn-primary btn-block">Generate Avatar</button>
+      </form>
+    </div>
+
+    <script>
+      const translations = {
+        en: {
+          title: "3D Avatar Generator",
+          welcomeMessage: "Welcome to the 3D avatar generator tool! Please fill in the form below with the required measurements in mm to generate a personalized avatar.",
+          gender: "Gender:",
+          neckGirth: "Neck Girth:",
+          upperArmGirthR: "Upper Arm Girth R:",
+          upperArmGirthL: "Upper Arm Girth L:",
+          backNeckPointToWaist: "Back Neck Point to Waist:",
+          backNeckPointToWristR: "Back Neck Point to Wrist R:",
+          backNeckPointToWristL: "Back Neck Point to Wrist L:",
+          bustGirth: "Bust Girth:",
+          waistGirth: "Waist Girth:",
+          hipGirth: "Hip Girth:",
+          acrossBackShoulderWidth: "Across Back Shoulder Width:",
+          thighGirthR: "Thigh Girth R:",
+          thighGirthL: "Thigh Girth L:",
+          totalCrotchLength: "Total Crotch Length:",
+          insideLegHeight: "Inside Leg Height:",
+          generateButton: "Generate Avatar"
+        },
+        fr: {
+          title: "Générateur d'Avatar 3D",
+          welcomeMessage: "Bienvenue dans l'outil de génération d'avatar 3D! Veuillez remplir le formulaire ci-dessous avec les mesures requises en mm pour générer un avatar personnalisé.",
+          gender: "Genre :",
+          neckGirth: "Tour de Cou :",
+          upperArmGirthR: "Tour de Bras Droit :",
+          upperArmGirthL: "Tour de Bras Gauche :",
+          backNeckToWaist: "Du Cou au Taille :",
+          backNeckToWristR: "Du Cou au Poignet Droit :",
+          backNeckToWristL: "Du Cou au Poignet Gauche :",
+          bustGirth: "Tour de Poitrine :",
+          waistGirth: "Tour de Taille :",
+          hipGirth: "Tour de Hanches :",
+          acrossShoulderWidth: "Largeur des Épaules :",
+          thighGirthR: "Tour de Cuisse Droit :",
+          thighGirthL: "Tour de Cuisse Gauche :",
+          totalCrotchLength: "Longueur Totale de l'Entrejambe :",
+          insideLegHeight: "Hauteur de l'Intérieur de la Jambe :",
+          generateButton: "Générer l'Avatar"
+        }
+      };
+
+      document.getElementById('languageSelect').addEventListener('change', function(event) {
+        const lang = event.target.value;
+        document.getElementById('title').innerText = translations[lang].title;
+        document.getElementById('welcomeMessage').innerText = translations[lang].welcomeMessage;
+        document.getElementById('Gender').previousElementSibling.innerText = translations[lang].gender;
+        document.getElementById('NeckGirth').previousElementSibling.innerText = translations[lang].neckGirth;
+        document.getElementById('UpperArmGirthR').previousElementSibling.innerText = translations[lang].upperArmGirthR;
+        document.getElementById('UpperArmGirthL').previousElementSibling.innerText = translations[lang].upperArmGirthL;
+        document.getElementById('BackNeckToWaist').previousElementSibling.innerText = translations[lang].backNeckToWaist;
+        document.getElementById('BackNeckToWristR').previousElementSibling.innerText = translations[lang].backNeckToWristR;
+        document.getElementById('BackNeckToWristL').previousElementSibling.innerText = translations[lang].backNeckToWristL;
+        document.getElementById('BustGirth').previousElementSibling.innerText = translations[lang].bustGirth;
+        document.getElementById('WaistGirth').previousElementSibling.innerText = translations[lang].waistGirth;
+        document.getElementById('HipGirth').previousElementSibling.innerText = translations[lang].hipGirth;
+        document.getElementById('AcrossShoulderWidth').previousElementSibling.innerText = translations[lang].acrossBackShoulderWidth;
+        document.getElementById('ThighGirthR').previousElementSibling.innerText = translations[lang].thighGirthR;
+        document.getElementById('ThighGirthL').previousElementSibling.innerText = translations[lang].thighGirthL;
+        document.getElementById('TotalCrotchLength').previousElementSibling.innerText = translations[lang].totalCrotchLength;
+        document.getElementById('InsideLegHeight').previousElementSibling.innerText = translations[lang].insideLegHeight;
+        document.querySelector('button[type="submit"]').innerText = translations[lang].generateButton;
+      });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
