@@ -150,7 +150,7 @@ The trained **cGAN** generates 3D avatars based on user-provided measurements. T
 1. 1. Clone the repository:
    ```bash
    git clone https://github.com/Aideveloper-dev/IEEE_CIS_ZEN_challenge.git
-   cd IEEE_CIS_ZEN_challenge
+   cd 3D_Avatar_generation
    ```
 2. Install dependencies:
    ```bash
