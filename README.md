@@ -1,4 +1,4 @@
-# 3D Avatar Generator and Customization Platform (Zen/CIS-IEEE challenge )
+# 3D Avatar Generator and Customization Platform
 
 A full-stack web application that generates personalized 3D avatars using conditional Generative Adversarial Networks (cGAN) and allows users to customize their avatars with clothing, hair, and other features.
 ## 3D Personalized Avatar Customization Interface Demo
